@@ -1,24 +1,26 @@
 package main
 
 import (
+	"bytes"
 	"context"
-	"fmt"
+	"encoding/json"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"html/template"
 	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
-	_ = getMongodbVersion()
-	// connect to mongodb
-	// get version
-	// get resources
-	// start web page
+	http.HandleFunc("/view", viewHandler)
+	_ = http.ListenAndServe("localhost:8182", nil)
 }
 
-func getMongodbVersion() string {
+func getMongodbVersion(address string) []byte {
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI(address)
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
@@ -32,20 +34,52 @@ func getMongodbVersion() string {
 		log.Fatal(err)
 	}
 
-	result := client.Database("admin").RunCommand(nil,"build")
-
-	var vers struct{
-		Version string `bson:"version"`
-	}
-	fmt.Println(result.Decode(vers))
-	fmt.Println(vers)
+	result := client.Database("admin").RunCommand(context.Background(), bson.D{{"buildInfo",1}})
 
 	str, err := result.DecodeBytes()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(str)
-
-	return ""
+	return preparePrettyJSON([]byte(str.String()))
 }
+
+func preparePrettyJSON(body []byte) []byte {
+	var prettyJSON bytes.Buffer
+	err := json.Indent(&prettyJSON, body, "", "\t")
+	if err != nil {
+		log.Fatalf("JSON parse error: ", err)
+	}
+
+	return prettyJSON.Bytes()
+}
+
+const (
+	defDBAddress     = "mongodb://localhost:27017"
+	defResourcesPath = "../my-resources/view/"
+)
+
+type Page struct {
+	Body []byte
+}
+
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+	var address string
+	if address == "" || len(os.Args[1]) < 2 {
+		address = defDBAddress
+	}
+
+	var pagePath string
+	if pagePath == "" || len(os.Args[1]) < 3 {
+		pagePath = defResourcesPath
+	}
+
+	t, _ := template.ParseFiles("../my-resources/view/view.html")
+	err := t.Execute(w, &Page{Body: getMongodbVersion(address)})
+	if err != nil {
+		log.Fatal()
+	}
+}
+
+
+
