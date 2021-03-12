@@ -1,0 +1,11 @@
+#!/bin/bash
+
+CONTAINER_NAME=mongo-session-$RANDOM
+
+while [[ -n `docker ps -a --format '{{.Names}}' | grep "^$CONTAINER_NAME$"` ]];do
+  CONTAINER_NAME=mongo-session-$RANDOM
+done;
+
+trap "docker rm -f $CONTAINER_NAME > /dev/null 2>&1" SIGHUP SIGINT SIGTERM
+
+docker run -i -t --rm=true --name=$CONTAINER_NAME -v /data/share:/data/share --net=host --entrypoint=/usr/bin/mongo ${DAM_APP_TAG} "$@"

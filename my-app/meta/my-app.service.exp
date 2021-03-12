@@ -1,0 +1,32 @@
+[Unit]
+Description=MongoDB container
+Requires=docker.service
+After=docker.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Environment=APP=mongodb
+TimeoutStartSec=0
+Restart=always
+RestartSec=10
+SyslogIdentifier=mongodb
+ExecStartPre=/bin/bash -c "mkdir -p /data/mongodb"
+ExecStartPre=/bin/bash -c "mkdir -p /etc/mongod"
+ExecStartPre=/bin/bash -c "[[ $(docker ps -q -a -f name=/\$APP$) ]] || \\
+  docker create \\
+    --hostname=\$APP \\
+    --log-driver=none \\
+    --name=\$APP \\
+     -p 27017:27017 \\
+     -v /etc/localtime:/etc/localtime:ro \\
+     -v /usr/share/zoneinfo:/usr/share/zoneinfo \\
+     -v /data/mongodb:/var/lib/mongodb \\
+     -v /etc/mongod:/etc/mongod \\
+     -v /data/share:/data/share \\
+     -l com.smilart.monitoring=on \\
+   ${DAM_APP_TAG}"
+ExecStart=/bin/bash -c "docker start -a \$APP"
+ExecStop=/bin/bash -c "docker stop -t 60 \$APP"
+ExecStopPost=-/bin/bash -c "systemctl stop docker-$( docker ps -q -a --no-trunc -f name=/\$APP$ ).scope"
