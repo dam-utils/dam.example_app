@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# uninstall systemd service
+systemctl stop mongodb.service
+systemctl disable mongodb.service
+rm -f /etc/systemd/system/mongodb.service
+
+# remove utils
+sudo rm -rf utils/*.exp
+cd utils/
+for name in * ; do
+    echo "Removing /usr/sbin/$name from the system ..."
+    sudo rm -f /usr/sbin/$name
+done;
+cd ../

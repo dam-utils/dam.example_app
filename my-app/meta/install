@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#Start container:
+echo "Starting my-app container..."
+docker run	-d \
+		-v /etc/my-app/my-app.conf:/opt/my-app/my-app.conf \
+		-v /data:/data \
+		--restart=always \
+		--name=my-app \
+		--net=host \
+		--log-driver=journald \
+		${DAM_APP_TAG}

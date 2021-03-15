@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+#Prepare system:
+# Copy config
+if [ ! -e /etc/mongod.conf ]; then
+    echo "Copying mongod.conf to /etc/mongod.conf ..."
+    RESULT_CONFIG_PATH="/etc/mongod.conf"
+else
+    # the config can be edited manually
+    echo "Copying mongod.conf to /etc/mongod.conf.${DAM_APP_VERSION} ..."
+    RESULT_CONFIG_PATH="/etc/mongod.conf.${DAM_APP_VERSION}"
+fi
+sudo cp -f ./mongod.conf $RESULT_CONFIG_PATH
+
+# install systemd service
+cp -f ./mongodb.service /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable mongodb.service
+systemctl start mongodb.service
+
+# copy utils to system
+sudo rm -rf utils/*.exp
+cd utils/
+for name in * ; do
+    echo "Copying $name to /usr/sbin/$name ..."
+    sudo cp -f $name /usr/sbin/$name
+    sudo chmod +x /usr/sbin/$name
+done;
+cd ../
