@@ -1,4 +1,5 @@
 #!/bin/bash
+sed -e
 
 # uninstall systemd service
 systemctl stop mongodb.service

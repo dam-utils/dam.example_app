@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
 
-mkdir -p /data
-cp -rf view /data/view
+sudo mkdir -p /data
+sudo cp -rf view /data/view

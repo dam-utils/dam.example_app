@@ -1,4 +1,5 @@
 #!/bin/bash
+sed -e
 
 #Start container:
 echo "Starting my-app container..."

@@ -3,13 +3,13 @@ set -e
 
 #Prepare system:
 # Copy config
-if [ ! -e /etc/mongod.conf ]; then
-    echo "Copying mongod.conf to /etc/mongod.conf ..."
-    RESULT_CONFIG_PATH="/etc/mongod.conf"
+if [ ! -e /etc/mongodb/mongod.conf ]; then
+    echo "Copying mongod.conf to /etc/mongodb/mongod.conf ..."
+    RESULT_CONFIG_PATH="/etc/mongodb/mongod.conf"
 else
     # the config can be edited manually
-    echo "Copying mongod.conf to /etc/mongod.conf.${DAM_APP_VERSION} ..."
-    RESULT_CONFIG_PATH="/etc/mongod.conf.${DAM_APP_VERSION}"
+    echo "Copying mongod.conf to /etc/mongodb/mongod.conf.${DAM_APP_VERSION} ..."
+    RESULT_CONFIG_PATH="/etc/mongodb/mongod.conf.${DAM_APP_VERSION}"
 fi
 sudo cp -f ./mongod.conf $RESULT_CONFIG_PATH
 
