@@ -1,8 +1,9 @@
 #!/bin/bash
-set -e
+set -evx
 
 #Prepare system:
 # Copy config
+sudo mkdir -p /etc/mongodb
 if [ ! -e /etc/mongodb/mongod.conf ]; then
     echo "Copying mongod.conf to /etc/mongodb/mongod.conf ..."
     RESULT_CONFIG_PATH="/etc/mongodb/mongod.conf"
@@ -14,10 +15,10 @@ fi
 sudo cp -f ./mongod.conf $RESULT_CONFIG_PATH
 
 # install systemd service
-cp -f ./mongodb.service /etc/systemd/system/
-systemctl daemon-reload
-systemctl enable mongodb.service
-systemctl start mongodb.service
+sudo cp -f ./mongodb.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable mongodb.service
+sudo systemctl start mongodb.service
 
 # copy utils to system
 sudo rm -rf utils/*.exp

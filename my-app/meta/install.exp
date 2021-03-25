@@ -1,10 +1,9 @@
 #!/bin/bash
-sed -e
+set -e
 
 #Start container:
 echo "Starting my-app container..."
-docker run	-d \
-		-v /etc/my-app/my-app.conf:/opt/my-app/my-app.conf \
+docker run -d \
 		-v /data:/data \
 		--restart=always \
 		--name=my-app \

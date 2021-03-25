@@ -1,10 +1,10 @@
 #!/bin/bash
-sed -e
+set -evx
 
 # uninstall systemd service
-systemctl stop mongodb.service
-systemctl disable mongodb.service
-rm -f /etc/systemd/system/mongodb.service
+sudo systemctl stop mongodb.service
+sudo systemctl disable mongodb.service
+sudo rm -f /etc/systemd/system/mongodb.service
 
 # remove utils
 sudo rm -rf utils/*.exp

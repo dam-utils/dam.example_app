@@ -1,8 +1,9 @@
-FROM alpine:3.12.4
+FROM ubuntu:18.04
 
 COPY ./meta /meta
 
-COPY ./my-app /my-app
+COPY ./my-app /opt/my-app
 
-RUN chmod +x /my-app
+RUN chmod +x /opt/my-app
 
+ENTRYPOINT /opt/my-app

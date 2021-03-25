@@ -56,7 +56,7 @@ func preparePrettyJSON(body []byte) []byte {
 
 const (
 	defDBAddress     = "mongodb://localhost:27017"
-	defResourcesPath = "../my-resources/view/"
+	defResourcesPath = "/data/view/"
 )
 
 type Page struct {
@@ -74,7 +74,7 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 		pagePath = defResourcesPath
 	}
 
-	t, _ := template.ParseFiles("../my-resources/view/view.html")
+	t, _ := template.ParseFiles("/data/view/view.html")
 	err := t.Execute(w, &Page{Body: getMongodbVersion(address)})
 	if err != nil {
 		log.Fatal()
