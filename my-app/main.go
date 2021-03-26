@@ -13,6 +13,11 @@ import (
 	"os"
 )
 
+const (
+	defDBAddress     = "mongodb://localhost:27017"
+	defResourcesPath = "/data/view/"
+)
+
 func main() {
 	http.HandleFunc("/view", viewHandler)
 	_ = http.ListenAndServe("localhost:8182", nil)
@@ -54,11 +59,6 @@ func preparePrettyJSON(body []byte) []byte {
 	return prettyJSON.Bytes()
 }
 
-const (
-	defDBAddress     = "mongodb://localhost:27017"
-	defResourcesPath = "/data/view/"
-)
-
 type Page struct {
 	Body []byte
 }
@@ -74,12 +74,9 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 		pagePath = defResourcesPath
 	}
 
-	t, _ := template.ParseFiles("/data/view/view.html")
+	t, _ := template.ParseFiles(defResourcesPath + "view.html")
 	err := t.Execute(w, &Page{Body: getMongodbVersion(address)})
 	if err != nil {
 		log.Fatal()
 	}
 }
-
-
-
