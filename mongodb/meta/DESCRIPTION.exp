@@ -1,2 +1,8 @@
 
+Приложение разворачивает в системе MongoDB.
+Устанавливает и запускает ее, как systemd сервис.
+Добавляет системные команды:
+- mongo
+- mongodump
+- mongorestore
 Версия mongodb v${DAM_APP_VERSION}
