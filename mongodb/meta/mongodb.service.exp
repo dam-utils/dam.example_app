@@ -17,7 +17,7 @@ ExecStartPre=/bin/bash -c "mkdir -p /etc/mongodb"
 ExecStartPre=/bin/bash -c "[[ $(docker ps -q -a -f name=/$APP$) ]] || \
   docker create \
     --hostname=$APP \
-    --log-driver=none \
+    --log-driver=journald \
     --name=$APP \
      -p 27017:27017 \
      -v /etc/localtime:/etc/localtime:ro \
