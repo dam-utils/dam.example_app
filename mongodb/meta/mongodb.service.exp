@@ -25,8 +25,6 @@ ExecStartPre=/bin/bash -c "[[ $(docker ps -q -a -f name=/$APP$) ]] || \
      -v /data/mongodb:/var/lib/mongodb \
      -v /etc/mongodb:/etc/mongod \
      -v /data/share:/data/share \
-     -l com.smilart.monitoring=on \
    ${DAM_APP_TAG}"
 ExecStart=/bin/bash -c "docker start -a $APP"
 ExecStop=/bin/bash -c "docker stop -t 60 $APP"
-ExecStopPost=-/bin/bash -c "systemctl stop docker-$( docker ps -q -a --no-trunc -f name=/$APP ).scope"
