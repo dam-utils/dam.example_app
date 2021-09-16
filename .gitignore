@@ -3,3 +3,4 @@ mongodb/meta/mongodb.service
 mongodb/meta/utils/mongo
 mongodb/meta/utils/mongodump
 mongodb/meta/utils/mongorestore
+my-app/vendor
