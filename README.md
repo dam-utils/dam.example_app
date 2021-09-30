@@ -1,6 +1,26 @@
 # dam.example_app
 
+Проект содержит примеры и материалы для обучения работе с DAM.
+
+## По проекту
+
+В корне проекта есть каталоги `mongodb`, `my-app`, `my-resources`.
+Они являются примерами приложений DAM.
+
+При работе с `my-app` необходимо предварительно создать бинарный `my-app` файл.
+Для этого используется Go версии 1.16 и выше.
+
+В проекте есть текстовые файлы `ЧастьX.md` с описанием, как работать с примерами и DAM.
+Части 1-6 были подготовлены для видео на [youtube](https://www.youtube.com/playlist?list=PLCMW4HaNNZOUK8pOFVydvWlxIRi0bTISt).
+После публикации данному проекту назначен тэг [Youtube-Video-Release](https://github.com/dam-utils/dam.example_app/tree/Youtube-Video-Release)
+
+Примеры для частей 1-6 запускаются в ветке `main` на Ubuntu 20.04.
+
+В ветке `windows` примеры дорабатываются под Windows 10 x64.
+
 ## Для чего DAM ?
+
+DAM в GitLab [https://github.com/dam-utils/dam](https://github.com/dam-utils/dam)
 
 * облегчает разработку и тестирование микро сервисных приложений,
   для локального развертывания без привязки к среде разработки,
